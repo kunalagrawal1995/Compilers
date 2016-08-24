@@ -1,0 +1,6 @@
+------------------------------------------------------------------
+By- Kunal Agrawal (130050004) and Parth Shah (130050015)
+------------------------------------------------------------------
+
+The name of the test file is "test.cc". (hardcoded in the Makefile) 
+Output produced is parse tree displayed in pdf format in the file "graph.pdf".

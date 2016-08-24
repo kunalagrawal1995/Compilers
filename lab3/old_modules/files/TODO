@@ -1,0 +1,18 @@
+COMPLETED:
+addresses for variables and array references using symbol table - HANDELLED
+expression evaluation(CODING PART) - BASIC HANDELLED
+handelling int constants in expression - evaluated only when needed
+assignments(without * and &s) // current version is unoptimized, does not directly substitute into stack. it first gets the address in a register and then puts it into stack, also in the end we leave the first register with value of the new assignment
+
+REMAINING:
+handelling multi
+function activation record handelling
+CASTING
+handelling the return 
+intial stack handelling; setting up the dynamic link and the changing the base pointer
+FLOAT CONSTANTS
+structs member and pointer
+* and &
+
+
+NOTE: MIPS has 32 bit addressing, need to change the pointer size to 4 instead of 8

@@ -1,0 +1,7 @@
+Makefile has only two changes which are made and revision uploaded in our_files folder. 
+
+see moodle for changes in lex.l
+
+all action gonna happen in parse.y... look at bison pdf for how to make a .c program interact with parse.y
+
+peace.

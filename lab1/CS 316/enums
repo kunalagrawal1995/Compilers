@@ -1,0 +1,7 @@
+        enum Tokens{MNEMONIC=0x100,
+                    NUMBER,
+                    IMMNUMBER,
+		            REGISTER,
+                    SYMBOL,
+                    IMMSYMBOL,
+                    OTHERS};

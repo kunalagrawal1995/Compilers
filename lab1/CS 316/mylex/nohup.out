@@ -1,0 +1,41 @@
+
+(firefox:9763): GLib-GObject-WARNING **: Attempt to add property GnomeProgram::sm-connect after class was initialised
+
+(firefox:9763): GLib-GObject-WARNING **: Attempt to add property GnomeProgram::show-crash-dialog after class was initialised
+
+(firefox:9763): GLib-GObject-WARNING **: Attempt to add property GnomeProgram::display after class was initialised
+
+(firefox:9763): GLib-GObject-WARNING **: Attempt to add property GnomeProgram::default-icon after class was initialised
+Fontconfig error: Cannot load default config file
+[9825:9862:0121/143839:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143840:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143840:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143840:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143840:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143840:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143840:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143840:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143840:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143840:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+Fontconfig error: Cannot load default config file
+Fontconfig error: Cannot load default config file
+[9825:9862:0121/143848:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143848:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143848:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143854:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143854:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143855:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+Fontconfig error: Cannot load default config file
+[9825:9862:0121/143856:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143856:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143900:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143900:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143901:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143902:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143902:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143902:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143903:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143903:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143903:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143904:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107
+[9825:9862:0121/143908:ERROR:ssl_client_socket_openssl.cc(1056)] handshake failed; returned -1, SSL error code 1, net_error -107

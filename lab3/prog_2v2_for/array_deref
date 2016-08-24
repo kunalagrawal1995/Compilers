@@ -1,0 +1,160 @@
+int b, c, i, **a;
+i = a[2][2];
+
+dereferencing =>
+		lw      $2,8($fp)
+	    nop
+        addiu   $2,$2,8
+        lw      $2,0($2)
+        nop
+        addiu   $2,$2,8
+        lw      $2,0($2)
+        nop
+
+int b, c, i, *a[5][5];
+i = a[2][3][2];
+
+dereferncing =>
+		addiu   $sp,$sp,-128
+        sw      $fp,124($sp)
+        move    $fp,$sp
+        lw      $2,72($fp)
+        nop
+        addiu   $2,$2,8
+        lw      $2,0($2)
+        nop
+        sw      $2,8($fp)
+        move    $sp,$fp
+        lw      $fp,124($sp)
+        addiu   $sp,$sp,128
+        j       $31
+        nop
+
+
+int main(){
+	int b, c, i, *a[5][5];
+	i = a[2][(b+c)*(b+b)][2];
+
+	MIPS
+		addiu   $sp,$sp,-128
+        sw      $fp,124($sp)
+        move    $fp,$sp
+        lw      $3,16($fp) 	// loading b
+        lw      $2,12($fp)	// loading c
+        nop
+        addu    $4,$3,$2	// this is b+c
+        lw      $3,16($fp)	// laoding b
+        lw      $2,16($fp)	// laoding b
+        nop
+        addu    $2,$3,$2	// this is b+b
+        mult    $4,$2		// this is (b+b)*(b+c)
+        mflo    $2
+        addiu   $2,$2,10	// this is 2*5
+        sll     $2,$2,2		// this is *4, for the int
+        addiu   $3,$fp,8	// cant figure why this, but guess this + 12 in line 56 would finally make everything sum to correct
+        addu    $2,$3,$2
+        lw      $2,12($2)	// address of a + offset
+        nop
+        addiu   $2,$2,8
+        lw      $2,0($2)	// finally loading the address
+        nop
+        sw      $2,8($fp)	// assigning
+        move    $sp,$fp
+        lw      $fp,124($sp)
+        addiu   $sp,$sp,128
+        j       $31
+        nop
+
+    OUR CODE
+    	Change stack 
+    	LOAD IN REGISTER b relative address -4
+    	LOAD IN REGISTER c relative address -8
+    	APPLY OPERATION PLUS-INT
+    	LOAD IN REGISTER b relative address -4
+    	LOAD IN REGISTER b relative address -4
+    	APPLY OPERATION PLUS-INT
+    	APPLY OPERATION MULT-INT
+    	multiply the result with 4
+    	LOAD IN REGISTER a relative address -16
+    	add to address 40
+    	Add the addresses 
+    	add to address 8
+
+}
+
+
+(((b+c)*(b+b))+i)*(((b+b)*(b-c))/c);
+// MIPS CODE
+		addiu   $sp,$sp,-32
+        sw      $fp,28($sp)
+        move    $fp,$sp
+        lw      $3,16($fp)      // loading b
+        lw      $2,12($fp)      // loading c
+        nop
+        addu    $4,$3,$2        // b+c
+        lw      $3,16($fp)      // loading b
+
+        lw      $2,16($fp)      // loading b
+        nop
+        addu    $2,$3,$2        // b+b
+        mult    $4,$2           // (b+b)*(b+c)
+        mflo    $3
+        lw      $2,8($fp)       // loading i
+        nop
+        addu    $4,$3,$2        // (b+b)*(b+c)+i
+        lw      $3,16($fp)      // loads b
+        lw      $2,16($fp)      // loads b
+        nop
+        addu    $5,$3,$2        // b+b
+        lw      $3,16($fp)      // loads b
+        lw      $2,12($fp)      // loads c
+        nop
+        subu    $2,$3,$2        // b-c
+        mult    $5,$2           // (b+b) * (b-c)
+        mflo    $3
+        lw      $2,12($fp)      // loads c
+        nop
+        bne     $2,$0,1f
+        div     $0,$3,$2
+        break   7
+1:
+        mfhi    $3
+        mflo    $2
+        nop
+        nop
+        mult    $4,$2
+        mflo    $2
+        sw      $2,8($fp)
+        move    $sp,$fp
+        lw      $fp,28($sp)
+        addiu   $sp,$sp,32
+        j       $31
+        nop
+
+
+// Our Code with #reg = 3($2, $3, $4)
+lw $2, -4($fp)
+lw $3, -8($fp)
+add $2, $2, $3
+lw $3, -4($fp)
+lw $4, -4($fp)
+add $3, $3, $4
+mult $2, $3
+mflo $2
+lw $3, -12($fp)
+add $2, $2, $3
+PUSH 2 ON STACK
+lw $3, -4($fp)
+lw $2, -4($fp)
+add $3, $3, $2
+lw $2, -4($fp)
+lw $4, -8($fp)
+sub $2, $2, $4
+mult $3, $2
+mflo $3
+lw $2, -8($fp)
+div $3, $2
+mflo $3
+Push the value from stack back in the 2
+mult $2, $3
+mflo $2

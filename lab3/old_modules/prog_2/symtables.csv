@@ -1,0 +1,10 @@
+Global Symbol Table
+symbol_name	var_fun_struct	param_local	type	size	offset
+main	1	-1	int	4	0
+
+
+Local Symbol Table for main
+symbol_name	var_fun_struct	param_local	type	size	offset
+a	0	0	float	4	-4
+b	0	0	float*	8	-8
+

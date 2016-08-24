@@ -1,0 +1,391 @@
+Changes to checked
+1. global offset is now 4; need to leave 2 blocks one for $ra, one for $sp;
+2. changed size for the parameters
+3. Order of evaluation in EXP_ASSIGN
+4. change made in * operator
+5. check all the ltypes, they should have a special case for n == 0 in generate code
+
+
+
+
+int b, c, i, **a;
+i = a[2][2];
+dereferencing =>
+		lw      $2,8($fp)
+	    nop
+        addiu   $2,$2,8
+        lw      $2,0($2)
+        nop
+        addiu   $2,$2,8
+        lw      $2,0($2)
+        nop
+
+int b, c, i, *a[5][5];
+i = a[2][3][2];
+
+dereferncing =>
+		addiu   $sp,$sp,-128
+        sw      $fp,124($sp)
+        move    $fp,$sp
+        lw      $2,72($fp)
+        nop
+        addiu   $2,$2,8
+        lw      $2,0($2)
+        nop
+        sw      $2,8($fp)
+        move    $sp,$fp
+        lw      $fp,124($sp)
+        addiu   $sp,$sp,128
+        j       $31
+        nop
+
+
+int main(){
+	int b, c, i, *a[5][5];
+	i = a[2][(b+c)*(b+b)][2];
+
+	MIPS
+		addiu   $sp,$sp,-128
+        sw      $fp,124($sp)
+        move    $fp,$sp
+        lw      $3,16($fp) 	// loading b
+        lw      $2,12($fp)	// loading c
+        nop
+        addu    $4,$3,$2	// this is b+c
+        lw      $3,16($fp)	// laoding b
+        lw      $2,16($fp)	// laoding b
+        nop
+        addu    $2,$3,$2	// this is b+b
+        mult    $4,$2		// this is (b+b)*(b+c)
+        mflo    $2
+        addiu   $2,$2,10	// this is 2*5
+        sll     $2,$2,2		// this is *4, for the int
+        addiu   $3,$fp,8	// cant figure why this, but guess this + 12 in line 56 would finally make everything sum to correct
+        addu    $2,$3,$2
+        lw      $2,12($2)	// address of a + offset
+        nop
+        addiu   $2,$2,8
+        lw      $2,0($2)	// finally loading the address
+        nop
+        sw      $2,8($fp)	// assigning
+        move    $sp,$fp
+        lw      $fp,124($sp)
+        addiu   $sp,$sp,128
+        j       $31
+        nop
+
+    OUR CODE
+    	Change stack 
+    	LOAD IN REGISTER b relative address -4
+    	LOAD IN REGISTER c relative address -8
+    	APPLY OPERATION PLUS-INT
+    	LOAD IN REGISTER b relative address -4
+    	LOAD IN REGISTER b relative address -4
+    	APPLY OPERATION PLUS-INT
+    	APPLY OPERATION MULT-INT
+    	multiply the result with 4
+    	LOAD IN REGISTER a relative address -16
+    	add to address 40
+    	Add the addresses 
+    	add to address 8
+
+
+// EXPRESSION HANDELLING
+(((b+c)*(b+b))+i)*(((b+b)*(b-c))/c);
+// MIPS CODE
+		addiu   $sp,$sp,-32
+        sw      $fp,28($sp)
+        move    $fp,$sp
+        lw      $3,16($fp)      // loading b
+        lw      $2,12($fp)      // loading c
+        nop
+        addu    $4,$3,$2        // b+c
+        lw      $3,16($fp)      // loading b
+
+        lw      $2,16($fp)      // loading b
+        nop
+        addu    $2,$3,$2        // b+b
+        mult    $4,$2           // (b+b)*(b+c)
+        mflo    $3
+        lw      $2,8($fp)       // loading i
+        nop
+        addu    $4,$3,$2        // (b+b)*(b+c)+i
+        lw      $3,16($fp)      // loads b
+        lw      $2,16($fp)      // loads b
+        nop
+        addu    $5,$3,$2        // b+b
+        lw      $3,16($fp)      // loads b
+        lw      $2,12($fp)      // loads c
+        nop
+        subu    $2,$3,$2        // b-c
+        mult    $5,$2           // (b+b) * (b-c)
+        mflo    $3
+        lw      $2,12($fp)      // loads c
+        nop
+        bne     $2,$0,1f
+        div     $0,$3,$2
+        break   7
+1:
+        mfhi    $3
+        mflo    $2
+        nop
+        nop
+        mult    $4,$2
+        mflo    $2
+        sw      $2,8($fp)
+        move    $sp,$fp
+        lw      $fp,28($sp)
+        addiu   $sp,$sp,32 
+        j       $31
+        nop
+
+// our code with #reg = 4($2, $3, $4, $5)
+lw $2, -4($fp)
+lw $3, -8($fp)
+add $2, $2, $3
+lw $3, -4($fp)
+lw $4, -4($fp)
+add $3, $3, $4
+mult $2, $3
+mflo $2
+lw $3, -12($fp)
+add $2, $2, $3
+lw $3, -4($fp)
+lw $4, -4($fp)
+add $3, $3, $4
+lw $4, -4($fp)
+lw $5, -8($fp)
+sub $4, $4, $5
+mult $3, $4
+mflo $3
+lw $4, -8($fp)
+div $3, $4
+mflo $3
+mult $2, $3
+mflo $2
+
+// Our Code with #reg = 3($2, $3, $4)
+lw $2, -4($fp)
+lw $3, -8($fp)
+add $2, $2, $3
+lw $3, -4($fp)
+lw $4, -4($fp)
+add $3, $3, $4
+mult $2, $3
+mflo $2
+lw $3, -12($fp)
+add $2, $2, $3
+PUSH 2 ON STACK
+lw $3, -4($fp)
+lw $2, -4($fp)
+add $3, $3, $2
+lw $2, -4($fp)
+lw $4, -8($fp)
+sub $2, $2, $4
+mult $3, $2
+mflo $3
+lw $2, -8($fp)
+div $3, $2
+mflo $3
+Push the value from stack back in the 2
+mult $2, $3
+mflo $2
+
+
+int b, c, i, *a[5][5];
+a[2][3][2];
+// MIPS code
+		addiu   $sp,$sp,-128
+        sw      $fp,124($sp)
+        move    $fp,$sp
+        lw      $2,72($fp)
+        nop
+        addiu   $2,$2,8
+        lw      $2,0($2)
+        nop
+        sw      $2,8($fp)
+        move    $sp,$fp
+        lw      $fp,124($sp)
+        addiu   $sp,$sp,128
+        j       $31
+
+// OUR code #reg = 4
+		lw $2, -16($fp)
+		addi $2, $2, 40
+		addi $2, $2, 12
+		lw $2, 0($2)
+		addi $2, $2, 8
+		lw $2, 0($2)
+
+
+int b, c, i, **a[5][5]
+a[2][3][2][1]
+//MIPS Code
+		addiu   $sp,$sp,-128
+        sw      $fp,124($sp)
+        move    $fp,$sp
+        lw      $2,72($fp)
+        nop
+        addiu   $2,$2,8
+        lw      $2,0($2)
+        nop
+        addiu   $2,$2,4
+        lw      $2,0($2)
+        nop
+        sw      $2,8($fp)
+        move    $sp,$fp
+        lw      $fp,124($sp)
+        addiu   $sp,$sp,128
+        j       $31
+        nop
+
+// OUR CODE
+		lw $2, -16($fp)
+		addi $2, $2, 40
+		addi $2, $2, 12
+		lw $2, 0($2)
+		addi $2, $2, 8
+		lw $2, 0($2)
+		addi $2, $2, 4
+		lw $2, 0($2)
+
+
+int b, c, i, *a[5][5];
+i = a[2][(b+c)*(b+b)][2];
+// MIPS CODE
+		addiu   $sp,$sp,-128
+        sw      $fp,124($sp)
+        move    $fp,$sp
+        lw      $3,16($fp)  // load b
+        lw      $2,12($fp)  // load c
+        nop
+        addu    $4,$3,$2    // b+c
+        lw      $3,16($fp)  // load b
+        lw      $2,16($fp)  // laod b
+        nop
+        addu    $2,$3,$2    // b+b
+        mult    $4,$2       // (b+b)*(b+b)
+        mflo    $2
+        addiu   $2,$2,10
+        sll     $2,$2,2
+        addiu   $3,$fp,8
+        addu    $2,$3,$2
+        lw      $2,12($2)
+        nop
+        addiu   $2,$2,8
+        lw      $2,0($2)
+        nop
+        sw      $2,8($fp)
+        move    $sp,$fp
+        lw      $fp,124($sp)
+        addiu   $sp,$sp,128
+        j       $31
+
+// OUR CODE #reg = 3
+		lw $3, -4($fp)
+        lw $2, -4($fp)
+        add $3, $3, $2
+        lw $2, -4($fp)
+        lw $4, -8($fp)
+        add $2, $2, $4
+        mult $3, $2
+        mflo $3
+        lw $2, -16($fp)
+        addi $2, $2, 40
+        multi $3, $3, 4
+        add $2, $2, $3
+        lw $2, 0($2)
+        addi $2, $2, 8
+        lw $2, 0($2)
+
+
+int b, c, i, *a[5][5];
+i = (i+b)*((a[2][(b+b)*(b+c)][2]+b)*((b*c)+(i*b)));
+// OUR CODE #reg =3
+        lw $2, -4($fp)  // load b
+        lw $3, -4($fp)  // load b
+        add $2, $2, $3  // b+b
+        lw $3, -4($fp)
+        lw $4, -8($fp)
+        add $3, $3, $4
+        mult $2, $3
+        mflo $2
+        lw $3, -16($fp)
+        addi $3, $3, 40
+        multi $2, $2, 4
+        add $3, $3, $2
+        lw $3, 0($3)
+        addi $3, $3, 8
+        lw $3, 0($3)    // finally the array
+        lw $2, -4($fp)  // load b
+        add $3, $3, $2  // arr + b
+        PUSH 3 ON STACK 
+        lw $2, -4($fp)  // load b
+        lw $3, -8($fp)  // load c
+        mult $2, $3     // b*c
+        mflo $2
+        lw $3, -12($fp) // load i
+        lw $4, -4($fp)  // load b
+        mult $3, $4     // i*b
+        mflo $3
+        add $2, $2, $3  // (b+c)*(i*b)
+        Push the value from stack back in the 3 
+        mult $3, $2
+        mflo $3
+        lw $2, -12($fp)
+        lw $4, -4($fp)
+        add $2, $2, $4
+        mult $2, $3
+        mflo $2
+
+// MIPS
+        addiu   $sp,$sp,-128
+        sw      $fp,124($sp)
+        move    $fp,$sp
+        lw      $3,8($fp)       // load i
+        lw      $2,16($fp)      // load b
+        nop
+        addu    $4,$3,$2        // i+b
+        lw      $3,16($fp)      // load b
+        lw      $2,16($fp)      // load b 
+        nop
+        addu    $5,$3,$2        // b+b
+        lw      $3,16($fp)      // load b
+        lw      $2,12($fp)      // load c
+        nop
+        addu    $2,$3,$2        // b+c
+        mult    $5,$2           // (b+c)*(b+b)
+        mflo    $2
+        addiu   $2,$2,10
+        sll     $2,$2,2
+        addiu   $3,$fp,8
+        addu    $2,$3,$2
+        lw      $2,12($2)
+        nop
+        addiu   $2,$2,8
+        lw      $3,0($2)        // loaded the array completely
+        lw      $2,16($fp)      // loading b
+        nop
+        addu    $5,$3,$2        // arr+b
+        lw      $3,12($fp)      // load c
+        lw      $2,8($fp)       // load i
+        nop
+        addu    $3,$3,$2        // i+c // epic optimization, mushkil hi ho
+         lw      $2,16($fp)
+        nop
+        mult    $3,$2           // (i+c)*b
+        mflo    $2
+        nop
+        nop
+        mult    $5,$2           // (arr + b)*()
+        mflo    $2
+        nop
+        nop
+        mult    $4,$2           // final
+        mflo    $2
+        sw      $2,8($fp)
+        move    $sp,$fp
+        lw      $fp,124($sp)
+        addiu   $sp,$sp,128
+        j       $31
+        nop

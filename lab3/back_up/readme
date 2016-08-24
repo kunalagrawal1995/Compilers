@@ -1,0 +1,75 @@
+int ***t[4][5][6];
+	type: int ***(*)[5][6];
+*t: type int ***(*)[6]; IMPORTANT
+****t: type int **
+
+
+int a[4] and int *a equivalent
+&a is of type int (*)[4] and not int **
+
+
+declaration of voids NOT ALLOWED
+
+BINARY OPERATOR:
+&&,|| : 
+	they allow anything as their operands except struct, not type restrictions
+	RETURN is int
+
+==	:
+	RETURN int
+	struct not allowed as any operand
+	any pointer with void*, else they need to be of the same types else base types
+
+>,>=,<,<= : 
+	RETURN int
+	struct not allowed as any operand
+	types if not base needs to be same
+
++ :
+	base types allowed; RETURN float if there is float involved else int
+	one pointer/array and other is int, offset addition; RETURN is the pointer
+
+- :
+	base types allowed; RETURN float if its involves else int
+	two same types can be subtracted; RETURN int
+	int may be SUBTRACTED FROM a pointer, like offset again; RETURN will be pointer
+
+*,/ :	
+	only base types as operands; RETURN float if involves else int
+
+UNARY OPERATOR:
+!:
+	RETURN: int
+	struct not allowed
+-:
+	RETURN: same as operand
+	only basic types int and float allowed, no structs and pointers any kind
+
+LTYPE:
+no arrays allowed, apart from * no unary operator, 
+ERROR CODES:
+	-3: variable undeclared
+	-6: negative indices
+	-7: type struct not declared
+	-11: used struct type value where scalar is required
+	-15: invalid operands to binary
+	-21: dereferencing ‘void *’ pointer
+	-22: invalid type argument of unary ‘*’
+	-23: label used but not defined
+	-24: wrong type argument to unary exclamation mark
+	-25: wrong type argument to unary minus
+	-31: request for member ‘a’ in something not a structure or union
+	-32: invalid type argument of ‘->’ (have ‘struct inte’)
+	-33: error: ‘struct inte’ has no member named ‘b’
+	-51: undefined reference to `randomfunction'
+	-52: too few arguments to function ‘fn3’
+	-53: too many arguments to function ‘fn3’
+	-54: expected ‘int *’ but argument is of type ‘int **’
+	-55: called object ‘f’ is not a function or function pointer
+	-61: lvalue required as left operand of assignment
+	-62: incompatible types when assigning to type
+	-63: in assignment something with void
+	-64: lvalue required as '&' operand
+	-65: lvalue required as increment operand
+	-71: incompatibe return types
+	-81: division by 0

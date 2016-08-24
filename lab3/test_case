@@ -1,0 +1,25 @@
+struct s{
+	int a[10];
+	float c;
+	int b;
+};
+
+
+int a, b, c[50], *d;
+float f;
+struct s s1, *s2;
+
+// intermediate result storing
+a = (b + c[10]) * a; 
+c[5] = (b - a) * (c[1] + a * b); 
+
+// type conversion
+f = f * a; 
+b = a / f; 
+
+// pointers 
+d = &c[4];
+
+// involving structs 
+s2->a[5] = a + s1.c;
+s1.b = s2->a[4]/d;

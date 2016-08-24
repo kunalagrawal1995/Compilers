@@ -1,0 +1,11 @@
+all:    lexical.cc  main.cc 
+	g++ --std=c++0x lexical.cc main.cc
+	./a.out<test-assembly>junk
+
+lexical.cc: lexical.l 
+	# cond_remove_scannerh
+	flexc++ lexical.l; 
+	sed -i '/int lex()/r enums' Scanner.h
+
+
+

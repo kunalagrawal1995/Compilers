@@ -1,0 +1,6 @@
+(Ass (Array (Id 'arr' LABEL: 1 )(IntConst 5))(Id 'b' LABEL: 1 ))
+addi $2, $fp, -216
+addi $2, $2, 20
+lw $3, -4($fp)
+sw $3, 0(2)
+lw $2, 0(2)

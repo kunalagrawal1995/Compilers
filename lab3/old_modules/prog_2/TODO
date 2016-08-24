@@ -1,0 +1,46 @@
+COMPLETED:
+	addresses for variables and array references using symbol table - HANDELLED
+	expression evaluation(CODING PART) - BASIC HANDELLED
+	handelling int constants in expression - evaluated only when needed
+	assignments(without * and &s) // current version is unoptimized, does not directly substitute into stack. it first gets the address in a register and then puts it into stack, also in the end we leave the first register with value of the new assignment
+	unary operators (!, -, *, &) handled.
+	Function calling without paarmeters and return value is handled. (working on it)
+	during a function call setting of the dynamic link, saving the return address and adding local stack is done; IN PROGRESS
+	Binary operators for int have been handelled
+	intial stack handelling; setting up the dynamic link and the changing the base pointer
+
+REMAINING:
+	creation of function activation record
+	CASTING
+	handelling the return 
+	FLOAT CONSTANTS
+	structs member and pointer
+	currently the printing cant be done in the end with all the symtables as the asts dont have names hence the local symbol table cant be mapped
+	loading of Integer constants bigger than 2*16
+NOTE: MIPS has 32 bit addressing, need to change the pointer size to 4 instead of 8
+
+UPDATES:
+the printing now happens after the entire compound_statement block has been made.
+generate_code has been added to each statement, implementation remains to be added to most
+
+TODO KUNAL:
+	- casting has been handelled mostly except the unary operators
+	- please write a few simple codes and check whether the output is coming to be same or not, atleast 7 involving different operators, mixture of float and int
+	- one thing to implement is the inc_op unary operator for integer
+	- implement casting for the unary operators 
+
+BYE BYE :p
+
+ONGOING:
+	CASTING basics
+		put everything in single(32 bit precision)
+		li.s can be used to load float constant in registers
+		TO FLOAT:mtc1 $reg, $freg used to move value from integer register to float register; follow it up with cvt.s.w $freg, $freg to cast
+		TO INT: cvt.w.s $freg, $freg; mfc1 $reg, $freg;
+	CASTING places:
+		- IDENTIFIER_REF handelled
+		- INT_CONSTANT handelled
+		- FLOAT_CONSTANT handelled
+		- EXP_ASSIGN no casting there, any casting needed would have been handelled already
+		- UN_OP left
+		- BIN_OP handelled

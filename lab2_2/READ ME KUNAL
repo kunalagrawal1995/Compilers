@@ -1,0 +1,7 @@
+the changes are in symtab.h and symtab.cpp
+
+A new marker non terminal in function definition;
+No type checking in type specifier even in the case of the structs;
+type checking while entring data in symtable, i.e. in the declaration parts for local and parameters;
+size calculation has changed;
+

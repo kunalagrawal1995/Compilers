@@ -1,0 +1,26 @@
+Global Symbol Table
+symbol_name	var_fun_struct	param_local	type	size	offset
+main	1	-1	int	4	0
+recursion	1	-1	int	4	0
+rec	2	-1		8	0
+
+
+Local Symbol Table for main
+symbol_name	var_fun_struct	param_local	type	size	offset
+a	0	0	int	4	-4
+b	0	0	int*[20]	800	-8
+r2	0	0	struct rec	8	-808
+
+Local Symbol Table for recursion
+symbol_name	var_fun_struct	param_local	type	size	offset
+a	0	2	int*	4	8
+b	0	3	int*[20]	4	12
+f	0	1	int	4	4
+i	0	0	int	4	-4
+r1	0	4	struct rec	8	20
+
+Local Symbol Table for rec
+symbol_name	var_fun_struct	param_local	type	size	offset
+i	0	0	int	4	-4
+r	0	0	float	4	0
+

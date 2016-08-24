@@ -1,0 +1,14 @@
+//integer pritning
+
+li $v0, 1
+move $a0, $2		# $2 =  whatever register that has to be printed
+syscall
+
+
+//float printing
+
+li $v0, 2
+mov.s $f12, $f0		# $f0is whatever float register that has to be printed
+syscall
+
+
